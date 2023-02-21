@@ -127,6 +127,7 @@ void loop() {
   //Print IMU Data from BNO's
   Serial.println("Ankle Angle:");
   Serial.print(abs(euler1.y()-euler2.y()));
+  Serial.print("\n---------------------\n");
 
-  delay(1000);          
+  delay(500);          
 }
