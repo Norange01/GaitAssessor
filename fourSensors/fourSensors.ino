@@ -126,7 +126,19 @@ void loop() {
 
   //Print IMU Data from BNO's
   Serial.println("Ankle Angle:");
-  Serial.print(abs(euler1.y()-euler2.y()));
+  Serial.print(abs(euler1.y()-euler2.y())); //when wires for bno2 are towards the ankle, reading is negative upon dorsiflexion
+  Serial.print("\n---------------------\n");
+  sensors_event_t event; 
+  bno2.getEvent(&event);
+  
+  /* Display the floating point data */
+  Serial.print("X: ");
+  Serial.print(event.orientation.x, 4);
+  Serial.print("\tY: ");
+  Serial.print(event.orientation.y, 4);
+  Serial.print("\tZ: ");
+  Serial.print(event.orientation.z, 4);
+  Serial.println("");
   Serial.print("\n---------------------\n");
 
   delay(500);          
