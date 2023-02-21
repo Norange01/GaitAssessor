@@ -6,11 +6,100 @@
 #define FORCE1 25
 #define FORCE2 26
 
+#define BNO055_SAMPLERATE_DELAY_MS (100)
+
+//Additional I2C pin declarations
+#define SDA_2 33
+#define SCL_2 32
+
+
+Adafruit_BNO055 bno1;
+Adafruit_BNO055 bno2;
+ 
 void setup() {
+  Wire.begin();
+  Wire1.begin(SDA_2, SCL_2, 100000);
   Serial.begin(921600);
+  Serial.println("\nI2C Scanner");
 
+  if(!bno1.begin())
+  {
+    /* There was a problem detecting the BNO055 ... check your connections */
+    Serial.print("Ooops, no BNO055_1 detected ... Check your wiring or I2C ADDR!");
+    //while(1);
+  }
 
+  bno2 = Adafruit_BNO055(-1, 0x28, &Wire1);
+  if(!bno2.begin())
+  {
+    /* There was a problem detecting the BNO055 ... check your connections */
+    Serial.print("Ooops, no BNO055_2 detected ... Check your wiring or I2C ADDR!");
+    //while(1);
+  }
+  displaySensorDetails();
 
+}
+
+//function that checks if any I2C device is connected (it will show multiple devices 
+//at different addresses if they are recognized and connected correctly)
+void checkI2C() {
+  byte error, address;
+  int nDevices;
+  Serial.println("Scanning...");
+  nDevices = 0;
+  for(address = 1; address < 127; address++ ) {
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+    if (error == 0) {
+      Serial.print("I2C device found at address 0x");
+      if (address<16) {
+        Serial.print("0");
+      }
+      Serial.println(address,HEX);
+      nDevices++;
+    }
+    else if (error==4) {
+      Serial.print("Unknow error at address 0x");
+      if (address<16) {
+        Serial.print("0");
+      }
+      Serial.println(address,HEX);
+    }    
+  }
+  if (nDevices == 0) {
+    Serial.println("No I2C devices found\n");
+  }
+  else {
+    Serial.println("done\n");
+  }
+}
+
+void displaySensorDetails(void)
+{
+  sensor_t sensor;
+  bno1.getSensor(&sensor);
+  Serial.println("------------------------------------");
+  Serial.print  ("Sensor:       "); Serial.println(sensor.name);
+  Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
+  Serial.print  ("Unique ID:    "); Serial.println(sensor.sensor_id);
+  Serial.print  ("Max Value:    "); Serial.print(sensor.max_value); Serial.println(" xxx");
+  Serial.print  ("Min Value:    "); Serial.print(sensor.min_value); Serial.println(" xxx");
+  Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" xxx");
+  Serial.println("------------------------------------");
+  Serial.println("");
+  delay(100);
+
+  bno2.getSensor(&sensor);
+  Serial.println("------------------------------------");
+  Serial.print  ("Sensor:       "); Serial.println(sensor.name);
+  Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
+  Serial.print  ("Unique ID:    "); Serial.println(sensor.sensor_id);
+  Serial.print  ("Max Value:    "); Serial.print(sensor.max_value); Serial.println(" xxx");
+  Serial.print  ("Min Value:    "); Serial.print(sensor.min_value); Serial.println(" xxx");
+  Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" xxx");
+  Serial.println("------------------------------------");
+  Serial.println("");
+  delay(500);
 }
 
 void loop() {
@@ -19,14 +108,25 @@ void loop() {
   // Read data from force sensor 1
   float force1_reading = abs(4095-analogRead(FORCE1));
 
-  Serial.print("Force Sensor 1: ");
+  Serial.print("Foot Front Force: ");
   Serial.println(force1_reading);
 
   // Read data from force sensor 2
   float force2_reading = abs(4095-analogRead(FORCE2));
 
-  Serial.print("Force Sensor 2: ");
+  Serial.print("Heal Force: ");
   Serial.println(force2_reading);
 
-  delay(100);
+  checkI2C();
+
+  imu::Vector<3> accel_value1 = bno1.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
+  imu::Vector<3> accel_value2 = bno2.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
+  imu::Vector<3> euler1 = bno1.getVector(Adafruit_BNO055::VECTOR_EULER);
+  imu::Vector<3> euler2 = bno2.getVector(Adafruit_BNO055::VECTOR_EULER);
+
+  //Print IMU Data from BNO's
+  Serial.println("Ankle Angle:");
+  Serial.print(abs(euler1.y()-euler2.y()));
+
+  delay(1000);          
 }
