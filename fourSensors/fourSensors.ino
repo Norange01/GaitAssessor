@@ -125,21 +125,30 @@ void loop() {
   imu::Vector<3> euler2 = bno2.getVector(Adafruit_BNO055::VECTOR_EULER);
 
   //Print IMU Data from BNO's
+  sensors_event_t event1; 
+  bno1.getEvent(&event1);
+  sensors_event_t event2; 
+  bno2.getEvent(&event2);
+  
   Serial.println("Ankle Angle:");
-  Serial.print(abs(euler1.y()-euler2.y())); //when wires for bno2 are towards the ankle, reading is negative upon dorsiflexion
+  //Serial.print(abs(euler1.y()-euler2.y())); //when wires for bno2 are towards the ankle, reading is negative upon dorsiflexion
+  if(abs(event2.orientation.z)<90){Serial.print(abs(180-event2.orientation.y-event1.orientation.y));}
+  else{Serial.print(abs(event2.orientation.y-event1.orientation.y));}
   Serial.print("\n---------------------\n");
-  sensors_event_t event; 
+  /*sensors_event_t event; 
   bno2.getEvent(&event);
   
-  /* Display the floating point data */
+  
   Serial.print("X: ");
   Serial.print(event.orientation.x, 4);
   Serial.print("\tY: ");
+  if(abs(event.orientation.z)<90){Serial.print(180-event.orientation.y, 4);}
+  else{Serial.print(event.orientation.y, 4);}
   Serial.print(event.orientation.y, 4);
   Serial.print("\tZ: ");
   Serial.print(event.orientation.z, 4);
   Serial.println("");
-  Serial.print("\n---------------------\n");
+  Serial.print("\n---------------------\n");*/
 
   delay(500);          
 }
