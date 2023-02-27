@@ -106,15 +106,15 @@ void loop() {
   
 
   // Read data from force sensor 1
-  float force1_reading = abs(4095-analogRead(FORCE1));
+  float force1_reading = (abs(4095-analogRead(FORCE1))/4095)*100;
 
-  Serial.print("Foot Front Force: ");
+  Serial.print("Foot Front Force (%): ");
   Serial.println(force1_reading);
 
   // Read data from force sensor 2
-  float force2_reading = abs(4095-analogRead(FORCE2));
+  float force2_reading = (abs(4095-analogRead(FORCE2))/4095)*100;
 
-  Serial.print("Heal Force: ");
+  Serial.print("Heal Force (%): ");
   Serial.println(force2_reading);
 
   checkI2C();
