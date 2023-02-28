@@ -45,17 +45,17 @@ void setup() {
 void checkI2C() {
   byte error, address;
   int nDevices;
-  Serial.println("Scanning...");
+  //Serial.println("Scanning...");
   nDevices = 0;
   for(address = 1; address < 127; address++ ) {
     Wire.beginTransmission(address);
     error = Wire.endTransmission();
     if (error == 0) {
-      Serial.print("I2C device found at address 0x");
-      if (address<16) {
-        Serial.print("0");
-      }
-      Serial.println(address,HEX);
+      //Serial.print("I2C device found at address 0x");
+      //if (address<16) {
+        //Serial.print("0");
+      //}
+      //Serial.println(address,HEX);
       nDevices++;
     }
     else if (error==4) {
@@ -69,9 +69,9 @@ void checkI2C() {
   if (nDevices == 0) {
     Serial.println("No I2C devices found\n");
   }
-  else {
-    Serial.println("done\n");
-  }
+  //else {
+    //Serial.println("done\n");
+  //}
 }
 
 void displaySensorDetails(void)
@@ -106,15 +106,15 @@ void loop() {
   
 
   // Read data from force sensor 1
-  float force1_reading = (abs(4095-analogRead(FORCE1))/4095)*100;
+  float force1_reading = abs(4095-analogRead(FORCE1));
 
-  Serial.print("Foot Front Force (%): ");
+  Serial.print("Foot Front Force (/4095): ");
   Serial.println(force1_reading);
 
   // Read data from force sensor 2
-  float force2_reading = (abs(4095-analogRead(FORCE2))/4095)*100;
+  float force2_reading = abs(4095-analogRead(FORCE2));
 
-  Serial.print("Heal Force (%): ");
+  Serial.print("Heal Force (/4095): ");
   Serial.println(force2_reading);
 
   checkI2C();
