@@ -12,6 +12,8 @@
 #define SDA_2 33
 #define SCL_2 32
 
+#define patientFootAngle 10 //in degrees
+
 
 Adafruit_BNO055 bno1;
 Adafruit_BNO055 bno2;
@@ -131,14 +133,11 @@ void loop() {
   bno2.getEvent(&event2);
   
   Serial.println("Ankle Angle:");
-  //Serial.print(abs(euler1.y()-euler2.y())); //when wires for bno2 are towards the ankle, reading is negative upon dorsiflexion
-  if(abs(event2.orientation.z)<90){Serial.print(abs(180-event2.orientation.y-event1.orientation.y));}
-  else{Serial.print(abs(event2.orientation.y-event1.orientation.y));}
+  if(abs(event2.orientation.z)<90){Serial.print(abs(180-event2.orientation.y-event1.orientation.y)-patientFootAngle);}
+  else{Serial.print(abs(event2.orientation.y-event1.orientation.y)-patientFootAngle);}
   Serial.print("\n---------------------\n");
-  /*sensors_event_t event; 
-  bno2.getEvent(&event);
   
-  
+  /*
   Serial.print("X: ");
   Serial.print(event.orientation.x, 4);
   Serial.print("\tY: ");

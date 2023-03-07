@@ -16,7 +16,7 @@ Adafruit_BNO055 bno2;
 void setup() {
   Wire.begin();
   Wire1.begin(SDA_2, SCL_2, 100000);
-  Serial.begin(115200);
+  Serial.begin(921600);
   Serial.println("\nI2C Scanner");
 
   if(!bno1.begin())
