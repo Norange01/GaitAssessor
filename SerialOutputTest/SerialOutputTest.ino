@@ -1,4 +1,4 @@
-int i=5;
+int i=0;
 void setup() 
 {
   Serial.begin(9600);
@@ -7,5 +7,5 @@ void setup()
 void loop() 
 {
    Serial.println(i);
-   //i++; 
+   i++; 
 }

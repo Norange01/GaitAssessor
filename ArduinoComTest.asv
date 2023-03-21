@@ -9,8 +9,7 @@ x=linspace(1,100);
 y = zeros(1,100);
    
 for i=1:length(x)
-	num = (fscanf(arduino, '%d'));
-    y(i) = i;
+	n(fscanf(arduino, '%d'));
 end
 	
 fclose(arduino);
