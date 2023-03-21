@@ -138,8 +138,8 @@ void loop() {
   bno2.getEvent(&event2);
   
   Serial.println("Ankle Angle:");
-  if(abs(event2.orientation.z)<90){Serial.print(abs(180-event2.orientation.y-event1.orientation.y)-patientFootAngle);}
-  else{Serial.print(abs(event2.orientation.y-event1.orientation.y)-patientFootAngle);}
+  if(abs(event2.orientation.z)<90){Serial.print(abs(180-event2.orientation.y+event1.orientation.y)+patientFootAngle);}
+  else{Serial.print(abs(event2.orientation.y+event1.orientation.y)+patientFootAngle);}
   Serial.print("\n---------------------\n");
   
   /*
