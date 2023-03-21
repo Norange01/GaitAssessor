@@ -2,25 +2,37 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 
+#define patientFootAngle 10 //in degrees
 
 #define FORCE1 25
 #define FORCE2 26
 
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 
-//Additional I2C pin declarations
-#define SDA_2 33
-#define SCL_2 32
+//foot
+#define SDA_1 21
+#define SCL_1 22
+//leg
+#define SDA_2 19
+#define SCL_2 23
 
-#define patientFootAngle 10 //in degrees
+TwoWire I2Cone = TwoWire(0);
+TwoWire I2Ctwo = TwoWire(1);
+#define BNO055_SAMPLERATE_DELAY_MS (100)
+#define sensor1 26
+//here we setup the two bno sensors to use the different lines. Notice that they have the same address
+//which is okay
+//since they communicate on different lines.
+Adafruit_BNO055 bno1 = Adafruit_BNO055(55, 0x28, &I2Cone);
+Adafruit_BNO055 bno2 = Adafruit_BNO055(55, 0x28, &I2Ctwo);
 
 
-Adafruit_BNO055 bno1;
-Adafruit_BNO055 bno2;
+
  
 void setup() {
   Wire.begin();
-  Wire1.begin(SDA_2, SCL_2, 100000);
+  I2Cone.begin(SDA_1, SCL_1, 100000);
+  I2Ctwo.begin(SDA_2, SCL_2, 100000);
   Serial.begin(921600);
   Serial.println("\nI2C Scanner");
 
@@ -28,15 +40,14 @@ void setup() {
   {
     /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055_1 detected ... Check your wiring or I2C ADDR!");
-    //while(1);
+    while(1);
   }
 
-  bno2 = Adafruit_BNO055(-1, 0x28, &Wire1);
   if(!bno2.begin())
   {
     /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055_2 detected ... Check your wiring or I2C ADDR!");
-    //while(1);
+    while(1);
   }
   displaySensorDetails();
 
