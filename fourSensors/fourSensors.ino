@@ -10,11 +10,11 @@
 #define BNO055_SAMPLERATE_DELAY_MS (100)
 
 //foot
-#define SDA_1 21
-#define SCL_1 22
+#define SDA_1 19
+#define SCL_1 23
 //leg
-#define SDA_2 19
-#define SCL_2 23
+#define SDA_2 21
+#define SCL_2 22
 
 TwoWire I2Cone = TwoWire(0);
 TwoWire I2Ctwo = TwoWire(1);
