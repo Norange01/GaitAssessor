@@ -1,18 +1,34 @@
 clear all
 clc
  
-arduino=serialport("/dev/cu.usbserial-1420",9600);
+arduino=serialport("/dev/cu.usbserial-1420",921600);
  
 fopen(arduino);
  
-x=linspace(1,100);
-y = zeros(1,100);
-   
+disp('arduino connected successfully')
+x=linspace(1,10^100);
+
+align = fscanf(arduino, '%d');
+disp('reading data...')
+
 for i=1:length(x)
-	num = (fscanf(arduino, '%d'));
-    y(i) = i;
+
+	y(i) = 100*(fscanf(arduino, '%d'));
+ 
+    z(i) = 90*(fscanf(arduino, '%d'));
+
+    k(i) = (fscanf(arduino, '%d'));
+
+   
 end
-	
-fclose(arduino);
+
 disp('making plot..')
-plot(x,y);
+figure,
+scatter(x,y, 'filled')
+hold on
+scatter(x,z, 'filled')
+hold on
+scatter(x,k, 'filled')
+hold off
+legend ('Heal strike', 'Toe strike', 'Ankle Angle')
+disp('done')
