@@ -2,7 +2,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 
-#define patientFootAngle 10 //in degrees
+
 
 #define FORCE1 25
 #define FORCE2 26
@@ -13,6 +13,8 @@
 //leg
 #define SDA_2 21
 #define SCL_2 22
+
+int patientFootAngle = 10; //in degrees
 
 TwoWire I2Cone = TwoWire(0);
 TwoWire I2Ctwo = TwoWire(1);
@@ -128,10 +130,18 @@ void loop() {
   sensors_event_t event2; 
   bno2.getEvent(&event2);
   
-  if(abs(event2.orientation.z)<90){Serial.print(abs(180-event2.orientation.y+event1.orientation.y)+patientFootAngle);}
-  else{Serial.print(abs(event2.orientation.y+event1.orientation.y)+patientFootAngle);}
+
+  float angle; 
   
+  if(abs(event2.orientation.z)<90){angle=abs(180-event2.orientation.y+event1.orientation.y)+patientFootAngle;}
+  else{angle=abs(event2.orientation.y+event1.orientation.y)+patientFootAngle;}
+  Serial.print(angle);
   
+  int matlabdata=Serial.read(); // check for signal
+  if(matlabdata==1){
+    //calibrate
+    patientFootAngle=abs(angle-90);
+  }
 
 
   delay(100);          
