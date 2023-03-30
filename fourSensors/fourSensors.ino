@@ -133,8 +133,8 @@ void loop() {
 
   float angle; 
   
-  if(abs(event2.orientation.z)<90){angle=abs(abs(180-event2.orientation.y+event1.orientation.y)-patientFootAngle-180);}
-  else{angle=abs(abs(event2.orientation.y+event1.orientation.y)-patientFootAngle-180);}
+  if(abs(event2.orientation.z)<90){angle=abs(abs(event2.orientation.y+event1.orientation.y)-patientFootAngle-180);}
+  else{angle=abs(abs(180-event2.orientation.y+event1.orientation.y)-patientFootAngle-180);}
   Serial.print(angle);
   /*
   int matlabdata=Serial.read(); // check for signal
