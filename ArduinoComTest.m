@@ -1,7 +1,7 @@
 clear all
 clc
  
-arduino=serialport("/dev/cu.usbserial-1420",921600);
+arduino=serialport("/dev/cu.usbserial-1410",921600);
  
 fopen(arduino);
  
