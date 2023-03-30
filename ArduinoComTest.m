@@ -6,7 +6,7 @@ arduino=serialport("/dev/cu.usbserial-1420",921600);
 fopen(arduino);
  
 disp('arduino connected successfully')
-x=linspace(1,10^100);
+x=(1:1000);
 
 align = fscanf(arduino, '%d');
 disp('reading data...')
@@ -21,7 +21,13 @@ for i=1:length(x)
 
    
 end
+length(y)
+fileID = fopen('TypicalGait.txt','w');
+for j =1:length(y)
+    fprintf(fileID,'%d %d %d \n',y(j), z(j), k(j));
+end
 
+fclose(fileID);
 disp('making plot..')
 figure,
 scatter(x,y, 'filled')
