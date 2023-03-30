@@ -136,13 +136,13 @@ void loop() {
   if(abs(event2.orientation.z)<90){angle=abs(180-event2.orientation.y+event1.orientation.y)+patientFootAngle;}
   else{angle=abs(event2.orientation.y+event1.orientation.y)+patientFootAngle;}
   Serial.print(angle);
-  
+  /*
   int matlabdata=Serial.read(); // check for signal
   if(matlabdata==1){
     //calibrate
     patientFootAngle=abs(angle-90);
   }
-
+*/
 
   delay(10);          
 }
